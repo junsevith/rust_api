@@ -1,9 +1,10 @@
-use crate::users::jwt::encode_jwt;
 use axum::http::StatusCode;
 use axum::{Extension, Json};
 use bcrypt::verify;
 use serde::Deserialize;
 use sqlx::{Pool, Postgres};
+use crate::auth::get_user::retrieve_user_by_email;
+use crate::auth::jwt::encode_jwt;
 
 #[derive(Deserialize)]
 pub struct SignInData {
@@ -34,25 +35,4 @@ pub async fn login(
 
     // 4. Return the token
     Ok(Json(token))
-}
-
-#[derive(Clone)]
-pub struct CurrentUser {
-    pub email: String,
-    pub username: String,
-    pub password_hash: String,
-}
-
-async fn retrieve_user_by_email(
-    email: &str,
-    pool: Pool<Postgres>,
-) -> Option<CurrentUser> {
-    sqlx::query_as!(
-        CurrentUser,
-        "SELECT email, username, password_hash FROM users WHERE email = $1",
-        email
-    )
-    .fetch_one(&pool)
-    .await
-    .ok()
 }

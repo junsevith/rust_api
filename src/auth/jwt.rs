@@ -30,7 +30,7 @@ pub fn encode_jwt(email: String) -> Result<String, StatusCode> {
 }
 
 pub fn decode_jwt(jwt: String) -> Result<TokenData<Claims>, StatusCode> {
-    let secret = std::env::var("JWTSECRET").expect("JWTSECRET must be set");;
+    let secret = std::env::var("JWTSECRET").expect("JWTSECRET must be set");
 
     let result: Result<TokenData<Claims>, StatusCode> = decode(
         &jwt,
