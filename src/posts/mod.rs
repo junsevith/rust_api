@@ -1,6 +1,7 @@
 pub mod create;
 pub mod update;
 pub mod delete;
+pub mod many;
 
 use axum::{Extension, Json};
 use axum::extract::Path;
@@ -16,16 +17,7 @@ pub struct Post {
     body: String,
 }
 
-pub async fn get_posts(
-    Extension(pool): Extension<Pool<Postgres>>
-) -> Result<Json<Vec<Post>>, StatusCode> {
-    let posts = sqlx::query_as!(Post, "SELECT id, title, body,user_id FROM posts")
-        .fetch_all(&pool)
-        .await
-        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
 
-    Ok(Json(posts))
-}
 pub async fn get_post(
     Extension(pool): Extension<Pool<Postgres>>,
     Path(id): Path<i32>,

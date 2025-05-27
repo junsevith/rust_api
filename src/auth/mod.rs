@@ -5,6 +5,7 @@ pub(crate) mod authorization;
 mod get_user;
 mod jwt;
 pub mod login;
+pub(crate) mod admin;
 
 #[derive(Clone, Type, Serialize, Deserialize)]
 #[sqlx(type_name = "user_permission", rename_all = "lowercase")]

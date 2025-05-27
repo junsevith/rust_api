@@ -10,8 +10,8 @@ use serde_json::json;
 use sqlx::{Pool, Postgres};
 
 pub struct AuthError {
-    message: String,
-    status_code: StatusCode,
+    pub(crate) message: String,
+    pub(crate) status_code: StatusCode,
 }
 
 impl IntoResponse for AuthError {
